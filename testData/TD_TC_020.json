@@ -1,0 +1,22 @@
+{
+    "runs": [
+        {
+            "url": "https://www.bestbuy.com",
+            "keyboardKey": "Space",
+            "product1": "Insignia™ - 55\" Class F50 Series LED 4K UHD Smart Fire TV",
+            "product2": "Samsung - 55\" Class U7900 Series UHD 4K Smart Tizen TV (2025)",
+            "product3": "Insignia™ - 55\" Class QF Series QLED 4K UHD Smart Fire TV",
+            "productResolution": "4K (2160p)",
+            "productSize": "55 inches",
+
+            "Scnshtname1": "Navigation to URL",
+            "Scnshtname2": "4K_TVs with 55 inches",
+            "Scnshtname3": "Products_Added_to_Compare",
+            "Scnshtname4": "Product Features",
+            "Scnshtname5": "Product Ratings",
+            "Scnshtname6": "Product_with_Highest_Rating_Added_to_Cart"
+            
+        }
+       
+    ]
+}

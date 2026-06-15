@@ -1,0 +1,21 @@
+{
+    "runs": [
+        {
+            "api_menu_header": "API Catalog",
+            "airportinfo_endpoint_url": "GET /avf/v1/refdata/airportInfo",
+            "airportinfo_endpoint_description": "This endpoint fetches the airport details. The airport is identified using a unique iataCode or icaoCode or countryName or airportName to retrieve the airport and shipTo details.",
+            "create_endpoint_url": "POST /avf/v1/fuelRequest/create",
+            "create_endpoint_description": "This endpoint allows you to create the fuel requests.",
+            "uploadAOC_endpouint_url":"POST/avf/v1/fuelRequest/uploadAOC/{fuelRequestId}",
+            "uploadAOC_endpoint_description":"This endpoint allows you to upload an Air Operator's Certificate (AOC) file. The reseller has a five-minute window from the time of creation of fuel request to upload the file(s). The supported file formats are PDF, JPEG, and PNG. The maximum size for each file is 3 MB. You can upload up to four files with a unique names (duplicate file names are not allowed).",
+            "status_endpoint_url":"GET/avf/v1/fuelRequest/status/{fuelRequestId}",
+            "status_endpoint_description":"This endpoint enables you to retrieve the status of a fuel request based on the fuelRequestId.",
+            "ammend_endpoint_url":"POST /avf/v1/fuelRequest/amend",
+            "ammend_endpoint_description":"This endpoint allows you to amend the fuel request.",
+            "cancel_endpoint_url":"POST /avf/v1/cancel",
+            "cancel_endpoint_description":"This endpoint allows you to cancel the fuel request.",
+            "search_endpoint_url":"POST /avf/v1/products/search",
+            "search_endpoint_description":"This endpoint fetches the details of a product shipTo, soldTo and query parameter."
+        }
+    ]
+}

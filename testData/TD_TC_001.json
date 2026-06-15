@@ -1,0 +1,10 @@
+{
+    "runs": [
+        {
+            "headingForApiMenu": "API Catalog",
+            "subtabsNamees": "All(active tab)AuthenticationCard ManagementData & ReportingeMobilityLocationsLoyaltyMobilityPaymentsB2BLubricantsAviation",
+            "cardManagementMenuVerificationText": "Card Management",
+            "noOfApiInCardManagement": 3
+        }
+    ]
+}

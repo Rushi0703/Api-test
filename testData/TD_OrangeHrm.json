@@ -1,0 +1,18 @@
+{
+  "runs": [
+    {
+      "url": "https://opensource-demo.orangehrmlive.com/",
+      "username": "Admin",
+      "password": "admin123",
+      "firstName": "John",
+      "middleName": "res",
+      "lastName": "Doe",
+      "jobTitle": "Software Engineer",
+      "email": "john@rediff.com",
+      "phone": "9823242522",
+      "keywords": "playwright, selenium, git",
+      "notes": "Sample test",
+      "shortlistNote": "Sample note"
+    }
+  ]
+}

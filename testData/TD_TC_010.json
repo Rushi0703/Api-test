@@ -1,0 +1,15 @@
+{
+    "runs": [
+        {   "url":"https://apps.paybooks.in/mylogin.aspx",
+            "username": "hrishi@brownboxconsulting.com",
+            "password": "Bbc@2025",
+            "domain": "pay0909372",
+            "emp_for_leaves": "Pranav",
+            "loss_of_pay": "3",
+            "sick_leave": "5",
+            "earned_leave": "1",
+            "override_tax": "15000",
+            "success_msg":"Payroll processed successfully"
+        }
+    ]
+}
