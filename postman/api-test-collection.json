@@ -1,0 +1,352 @@
+{
+  "info": {
+    "_postman_id": "ecc6a517-ebf1-49a4-9d4f-ac59d9f94c1b",
+    "name": "api-test-collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "23465596"
+  },
+  "item": [
+    {
+      "name": "GET-Request 1  SWAPI Single Person",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "const data = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Name matches CSV\", () => {\r",
+              "    pm.expect(data.name).to.eql(\r",
+              "        pm.iterationData.get(\"personName\")\r",
+              "    );\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Films count matches CSV\", () => {\r",
+              "    pm.expect(data.films.length).to.eql(\r",
+              "        Number(pm.iterationData.get(\"filmCount\"))\r",
+              "    );\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Height is string\", () => {\r",
+              "    pm.expect(data.height).to.be.a(\"string\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Homeworld contains ID\", () => {\r",
+              "    pm.expect(data.homeworld).to.include(\r",
+              "        pm.iterationData.get(\"homeworldId\")\r",
+              "    );\r",
+              "});\r",
+              "\r",
+              "// Chaining variables\r",
+              "pm.environment.set(\"homeworldUrl\", data.homeworld);\r",
+              "pm.environment.set(\"firstFilmUrl\", data.films[0]);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{swapiBase}}/people/{{personId}}",
+          "host": [
+            "{{swapiBase}}"
+          ],
+          "path": [
+            "people",
+            "{{personId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET-Request 2-SWAPI Homeworld Chain",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Name is not empty\", () => {\r",
+              "    pm.expect(response.name).to.be.a(\"string\").and.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Population is a string\", () => {\r",
+              "    pm.expect(response.population).to.be.a(\"string\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Climate is not empty\", () => {\r",
+              "    pm.expect(response.climate).to.be.a(\"string\").and.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Terrain is not empty\", () => {\r",
+              "    pm.expect(response.terrain).to.be.a(\"string\").and.not.empty;\r",
+              "});\r",
+              "\r",
+              "// Save climate\r",
+              "pm.environment.set(\"homeworldClimate\", response.climate);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{homeworldUrl}}",
+          "host": [
+            "{{homeworldUrl}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET-Request 3-SWAPI Starship Count for Film",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Title is not empty\", () => {\r",
+              "    pm.expect(response.title).to.be.a(\"string\").and.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Starships is an array\", () => {\r",
+              "    pm.expect(response.starships).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Starship count is greater than 0\", () => {\r",
+              "    pm.expect(response.starships.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Episode ID is a number\", () => {\r",
+              "    pm.expect(response.episode_id).to.be.a(\"number\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{firstFilmUrl}}",
+          "host": [
+            "{{firstFilmUrl}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET-Request 4-AIC Artwork Lookup",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "const data = response.data;\r",
+              "\r",
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Artwork ID matches CSV\", () => {\r",
+              "    pm.expect(data.id).to.eql(\r",
+              "        Number(pm.iterationData.get(\"artworkId\"))\r",
+              "    );\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Artist contains expected artist\", () => {\r",
+              "    pm.expect(data.artist_display).to.include(\r",
+              "        pm.iterationData.get(\"expectedArtist\")\r",
+              "    );\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Title is not empty\", () => {\r",
+              "    pm.expect(data.title).to.be.a(\"string\").and.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"medium_display key exists\", () => {\r",
+              "    pm.expect(data).to.have.property(\"medium_display\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{aicBase}}/artworks/{{artworkId}}?fields=id,title,artist_display,date_display,medium_display",
+          "host": [
+            "{{aicBase}}"
+          ],
+          "path": [
+            "artworks",
+            "{{artworkId}}"
+          ],
+          "query": [
+            {
+              "key": "fields",
+              "value": "id,title,artist_display,date_display,medium_display"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET-Request 5-AIC Pagination Validation",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Data length is 10\", () => {\r",
+              "    pm.expect(response.data.length).to.eql(10);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Total > 100000\", () => {\r",
+              "    pm.expect(response.pagination.total).to.be.above(100000);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Current page is 1\", () => {\r",
+              "    pm.expect(response.pagination.current_page).to.eql(1);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Total pages > current page\", () => {\r",
+              "    pm.expect(response.pagination.total_pages)\r",
+              "      .to.be.above(response.pagination.current_page);\r",
+              "});\r",
+              "\r",
+              "response.data.forEach(item => {\r",
+              "    pm.expect(item.id).to.be.a(\"number\");\r",
+              "    pm.expect(item.title).to.be.a(\"string\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{aicBase}}/artworks?page=1&limit;=10&fields;=id,title,artist_display",
+          "host": [
+            "{{aicBase}}"
+          ],
+          "path": [
+            "artworks"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit;",
+              "value": "10"
+            },
+            {
+              "key": "fields;",
+              "value": "id,title,artist_display"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST-Requst6- Cross-API Audit POST",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 201\", () => {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "const data = pm.response.json();\r",
+              "\r",
+              "pm.expect(data.id).to.eql(101);\r",
+              "\r",
+              "pm.expect(data.title).to.eql(\r",
+              "    \"Cross-API Audit\"\r",
+              ");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Cross-API Audit\",\r\n  \"body\": \"SWAPI person {{personId}} homeworld climate: {{homeworldClimate}} | AIC artwork {{artworkId}}\",\r\n  \"userId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/posts",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

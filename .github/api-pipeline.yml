@@ -1,0 +1,142 @@
+name: API Automation Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+
+  smoke:
+    name: Smoke
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run smoke test (1 CSV iteration)
+        run: |
+          newman run postman/api-test-collection.json \
+            -e postman/api-test-env.json \
+            -d postman/test-data.csv \
+            --iteration-count 1 \
+            --env-var "swapiBase=${{ secrets.SWAPI_BASE }}"
+
+  postman-regression:
+    name: Postman Regression
+    runs-on: ubuntu-latest
+    needs: smoke
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Newman and reporters
+        run: |
+          npm install -g newman newman-reporter-htmlextra
+
+      - name: Create reports directory
+        run: mkdir -p reports
+
+      - name: Run full Postman regression
+        run: |
+          newman run postman/api-test-collection.json \
+            -e postman/api-test-env.json \
+            -d postman/test-data.csv \
+            --env-var "swapiBase=${{ secrets.SWAPI_BASE }}" \
+            --reporters cli,htmlextra,json \
+            --reporter-htmlextra-export ./reports/postman-report.html \
+            --reporter-htmlextra-title "API Automation Test Results" \
+            --reporter-htmlextra-showEnvironmentData true \
+            --reporter-json-export ./reports/postman-results.json \
+            --timeout-request 15000 \
+            --delay-request 300
+
+      - name: Upload Postman report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-html-report
+          path: reports/
+
+  playwright-regression:
+    name: Playwright Regression
+    runs-on: ubuntu-latest
+    needs: smoke
+
+    defaults:
+      run:
+        working-directory: playwright-api-test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: playwright-api-test/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        run: npx playwright test
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-html-report
+          path: playwright-api-test/playwright-report/
+
+      - name: Upload Playwright JSON results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-json-results
+          path: playwright-api-test/test-results/
+
+  results:
+    name: Results Summary
+    runs-on: ubuntu-latest
+    needs:
+      - postman-regression
+      - playwright-regression
+
+    if: always()
+
+    steps:
+      - name: Write summary table
+        run: |
+          echo "## API Automation Pipeline Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Suite | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Postman Regression | ${{ needs.postman-regression.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Playwright Regression | ${{ needs.playwright-regression.result }} |" >> $GITHUB_STEP_SUMMARY

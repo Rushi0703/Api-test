@@ -4,7 +4,7 @@ import { startTest, endTest, addRuntimeData, fetchRuntimeData, getTestDataFromDB
 import dotenv from 'dotenv';
 dotenv.config();
 
-test.describe('TC_001 API TestCase Template', () => {
+test.describe('Playwright Api test', () => {
 
   // Use following code to run testcase for multiple data sets
   // testData.runs.forEach((data, index) => {
@@ -18,7 +18,7 @@ test.describe('TC_001 API TestCase Template', () => {
 
 
 swVectors.forEach(vector => {
-    test(`SWAPI: ${vector.personName} appears in correct film count`, async ({ request,swapiRequest  }, testInfo) => {
+    test(`GET_SWAPI: ${vector.personName} appears in correct film count`, async ({ request,swapiRequest  }, testInfo) => {
 
       // Add runtime data 
       //await addRuntimeData(testInfo.title, data);
@@ -26,7 +26,7 @@ swVectors.forEach(vector => {
       let status = 'passed';
 
       // Start the test
-      const { logs, startTime } = await startTest("TC_001_runId_1");
+      const { logs, startTime } = await startTest("GET_SWAPI: ${vector.personName} appears in correct film count");
 
       let errorMessage: string | undefined;
 
@@ -52,7 +52,7 @@ swVectors.forEach(vector => {
       } finally {
 
         // End the test
-        await endTest("TC_001_runId_1", logs, startTime, status, testInfo, errorMessage, );
+        await endTest("GET_SWAPI: ${vector.personName} appears in correct film count", logs, startTime, status, testInfo, errorMessage, );
 
       }
 
@@ -63,7 +63,7 @@ swVectors.forEach(vector => {
 
 
 swVectors.forEach(vector => {
-    test(`TC_Film Count: ${vector.personName} homeworld resolves`, async ({ request,swapiRequest  }, testInfo) => {
+    test(`GET_SWAPI: ${vector.personName} homeworld resolves`, async ({ request,swapiRequest  }, testInfo) => {
 
       // Add runtime data 
       //await addRuntimeData(testInfo.title, data);
@@ -71,7 +71,7 @@ swVectors.forEach(vector => {
       let status = 'passed';
 
       // Start the test
-      const { logs, startTime } = await startTest("TC_001_runId_1");
+      const { logs, startTime } = await startTest("GET_SWAPI: ${vector.personName} homeworld resolves");
 
       let errorMessage: string | undefined;
 
@@ -102,7 +102,7 @@ swVectors.forEach(vector => {
       } finally {
 
         // End the test
-        await endTest("TC_001_runId_1", logs, startTime, status, testInfo, errorMessage, );
+        await endTest("GET_SWAPI: ${vector.personName} homeworld resolves", logs, startTime, status, testInfo, errorMessage, );
 
       }
 
@@ -114,7 +114,7 @@ swVectors.forEach(vector => {
 
 swVectors.forEach(vector => {
 
-test(`TC_Starships: ${vector.personName} starships`, async ({ request,swapiRequest  }, testInfo) => {
+test(`GET_SWAPI: ${vector.personName} starships`, async ({ request,swapiRequest  }, testInfo) => {
 
       // Add runtime data 
       //await addRuntimeData(testInfo.title, data);
@@ -122,7 +122,7 @@ test(`TC_Starships: ${vector.personName} starships`, async ({ request,swapiReque
       let status = 'passed';
 
       // Start the test
-      const { logs, startTime } = await startTest("TC_001_runId_1");
+      const { logs, startTime } = await startTest("GET_SWAPI: ${vector.personName} starships");
 
       let errorMessage: string | undefined;
 
@@ -145,7 +145,7 @@ test(`TC_Starships: ${vector.personName} starships`, async ({ request,swapiReque
       } finally {
 
         // End the test
-        await endTest("TC_001_runId_1", logs, startTime, status, testInfo, errorMessage, );
+        await endTest("GET_SWAPI: ${vector.personName} starships", logs, startTime, status, testInfo, errorMessage, );
 
       }
 
@@ -154,11 +154,11 @@ test(`TC_Starships: ${vector.personName} starships`, async ({ request,swapiReque
 });  
 
 
-   test('SWAPI: all people have required fields', async ({ swapiRequest }, testInfo) => {
+   test('GET_SWAPI: all people have required fields', async ({ swapiRequest }, testInfo) => {
 
   let status = 'passed';
 
-  const { logs, startTime } = await startTest('TC_001_runId_4');
+  const { logs, startTime } = await startTest('GET_SWAPI: all people have required fields');
 
   let errorMessage: string | undefined;
 
@@ -190,7 +190,7 @@ test(`TC_Starships: ${vector.personName} starships`, async ({ request,swapiReque
   } finally {
 
     await endTest(
-      'TC_001_runId_4',
+      'GET_SWAPI: all people have required fields',
       logs,
       startTime,
       status,
