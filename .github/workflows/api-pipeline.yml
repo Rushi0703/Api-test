@@ -34,8 +34,7 @@ jobs:
           newman run postman/api-test-collection.json \
             -e postman/api-test-env.json \
             -d postman/test-data.csv \
-            --iteration-count 1 \
-            --env-var "swapiBase=${{ secrets.SWAPI_BASE }}"
+            --iteration-count 1
 
   postman-regression:
     name: Postman Regression
