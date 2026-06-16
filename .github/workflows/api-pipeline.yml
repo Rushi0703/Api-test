@@ -62,7 +62,6 @@ jobs:
           newman run postman/api-test-collection.json \
             -e postman/api-test-env.json \
             -d postman/test-data.csv \
-            --env-var "swapiBase=${{ secrets.SWAPI_BASE }}" \
             --reporters cli,htmlextra,json \
             --reporter-htmlextra-export ./reports/postman-report.html \
             --reporter-htmlextra-title "API Automation Test Results" \
@@ -85,7 +84,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: Api-test
+
 
     steps:
       - name: Checkout repository
@@ -96,7 +95,7 @@ jobs:
         with:
           node-version: 18
           cache: npm
-          cache-dependency-path: Api-test/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -112,14 +111,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-html-report
-          path: playwright-api-test/playwright-report/
+          path: playwright-report/
 
       - name: Upload Playwright JSON results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-json-results
-          path: playwright-api-test/test-results/
+          path: test-results/
 
   results:
     name: Results Summary
